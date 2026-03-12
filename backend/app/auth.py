@@ -53,9 +53,10 @@ async def create_user(email: str, username: str, password: str, full_name: str =
         'created_at': datetime.now(timezone.utc).isoformat(),
         'updated_at': datetime.now(timezone.utc).isoformat()
     }
-    await db.users.insert_one(user_dict)
-    user_dict.pop('hashed_password')
-    return user_dict
+    result = await db.users.insert_one(user_dict)
+    # Remove MongoDB's _id and hashed_password before returning
+    user_response = {k: v for k, v in user_dict.items() if k not in ['hashed_password', '_id']}
+    return user_response
 
 async def create_oauth_user(email: str, oauth_provider: str, oauth_id: str, full_name: str = None):
     user_dict = {
@@ -71,9 +72,10 @@ async def create_oauth_user(email: str, oauth_provider: str, oauth_id: str, full
         'created_at': datetime.now(timezone.utc).isoformat(),
         'updated_at': datetime.now(timezone.utc).isoformat()
     }
-    await db.users.insert_one(user_dict)
-    user_dict.pop('hashed_password')
-    return user_dict
+    result = await db.users.insert_one(user_dict)
+    # Remove MongoDB's _id and hashed_password before returning
+    user_response = {k: v for k, v in user_dict.items() if k not in ['hashed_password', '_id']}
+    return user_response
 
 async def authenticate_user(email: str, password: str):
     user = await get_user_by_email(email)

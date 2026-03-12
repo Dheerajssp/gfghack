@@ -7,7 +7,7 @@ const api = axios.create({
   baseURL: API_URL,
 });
 
-// Add token to requests
+// Request interceptor - add token to all requests
 api.interceptors.request.use(
   (config) => {
     const token = authService.getToken();
@@ -21,13 +21,17 @@ api.interceptors.request.use(
   }
 );
 
-// Handle 401 errors
+// Response interceptor - handle 401 errors
 api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
-      authService.logout();
-      window.location.href = '/login';
+      // Only logout and redirect if not already on login page
+      const currentPath = window.location.pathname;
+      if (currentPath !== '/login' && currentPath !== '/register') {
+        authService.logout();
+        window.location.href = '/login';
+      }
     }
     return Promise.reject(error);
   }
