@@ -3,9 +3,11 @@ import { User, Globe, Palette, Bell, Save } from 'lucide-react';
 import { toast } from 'sonner';
 import authService from '../services/authService';
 import { useTranslation } from 'react-i18next';
+import { useTheme } from '../contexts/ThemeContext';
 
 export const Settings = () => {
   const { t, i18n } = useTranslation();
+  const { theme, setThemeMode } = useTheme();
   const user = authService.getCurrentUser();
   const [activeTab, setActiveTab] = useState('profile');
   const [profile, setProfile] = useState({
@@ -14,7 +16,7 @@ export const Settings = () => {
     username: user?.username || ''
   });
   const [language, setLanguage] = useState(i18n.language || 'en');
-  const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
+  const [selectedTheme, setSelectedTheme] = useState(theme);
   const [notifications, setNotifications] = useState({
     email: true,
     push: false,
@@ -46,14 +48,8 @@ export const Settings = () => {
   };
 
   const handleSaveTheme = () => {
-    localStorage.setItem('theme', theme);
-    // Apply theme to document
-    if (theme === 'dark') {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
-    toast.success(`Theme changed to ${theme}`);
+    setThemeMode(selectedTheme);
+    toast.success(`Theme changed to ${selectedTheme} mode`);
   };
 
   return (
@@ -194,29 +190,29 @@ export const Settings = () => {
                         type="radio"
                         name="theme"
                         value="light"
-                        checked={theme === 'light'}
-                        onChange={(e) => setTheme(e.target.value)}
+                        checked={selectedTheme === 'light'}
+                        onChange={(e) => setSelectedTheme(e.target.value)}
                         className="w-4 h-4"
                       />
                       <div>
-                        <p className="font-medium text-zinc-900">Light Mode</p>
-                        <p className="text-sm text-zinc-600">Bright and clear interface</p>
+                        <p className="font-medium text-zinc-900">{t('lightMode')}</p>
+                        <p className="text-sm text-zinc-600">{t('brightInterface')}</p>
                       </div>
                     </label>
                     <label className={`flex items-center gap-3 p-4 border-2 rounded-lg cursor-pointer ${
-                        theme === 'dark' ? 'border-violet-500 bg-violet-50' : 'border-zinc-200'
+                        selectedTheme === 'dark' ? 'border-violet-500 bg-violet-50' : 'border-zinc-200'
                       }`}>
                       <input
                         type="radio"
                         name="theme"
                         value="dark"
-                        checked={theme === 'dark'}
-                        onChange={(e) => setTheme(e.target.value)}
+                        checked={selectedTheme === 'dark'}
+                        onChange={(e) => setSelectedTheme(e.target.value)}
                         className="w-4 h-4"
                       />
                       <div>
-                        <p className="font-medium text-zinc-900">Dark Mode</p>
-                        <p className="text-sm text-zinc-600">Easy on the eyes</p>
+                        <p className="font-medium text-zinc-900">{t('darkMode')}</p>
+                        <p className="text-sm text-zinc-600">{t('easyOnEyes')}</p>
                       </div>
                     </label>
                   </div>

@@ -29,27 +29,26 @@ export const Layout = ({ children }) => {
   };
 
   return (
-    <div className="flex h-screen bg-zinc-50">
+    <div className="flex h-screen bg-zinc-50 dark:bg-zinc-900">
       {/* Sidebar */}
-      <aside className={`${sidebarOpen ? 'w-64' : 'w-20'} bg-white border-r border-zinc-200 transition-all duration-300 flex flex-col`}>
+      <aside className={`${sidebarOpen ? 'w-64' : 'w-20'} bg-white dark:bg-zinc-800 border-r border-zinc-200 dark:border-zinc-700 transition-all duration-300 flex flex-col`}>
         {/* Logo */}
-        <div className="p-6 border-b border-zinc-200 flex items-center justify-between">
-          {sidebarOpen && (
+        <div className="p-6 border-b border-zinc-200 dark:border-zinc-700 flex items-center justify-between">\n          {sidebarOpen && (
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-violet-500 to-indigo-600 flex items-center justify-center">
                 <BarChart3 className="w-6 h-6 text-white" />
               </div>
               <div>
-                <h1 className="text-lg font-heading font-bold text-zinc-900">Data Intel</h1>
-                <p className="text-xs text-zinc-500">AI Platform</p>
+                <h1 className="text-lg font-heading font-bold text-zinc-900 dark:text-white">Data Intel</h1>
+                <p className="text-xs text-zinc-500 dark:text-zinc-400">AI Platform</p>
               </div>
             </div>
           )}
           <button
             onClick={() => setSidebarOpen(!sidebarOpen)}
-            className="p-2 hover:bg-zinc-100 rounded-lg transition-colors"
+            className="p-2 hover:bg-zinc-100 dark:hover:bg-zinc-700 rounded-lg transition-colors"
           >
-            {sidebarOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            {sidebarOpen ? <X className="w-5 h-5 dark:text-zinc-300" /> : <Menu className="w-5 h-5 dark:text-zinc-300" />}
           </button>
         </div>
 
@@ -68,8 +67,8 @@ export const Layout = ({ children }) => {
                   flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200
                   ${
                     isActive
-                      ? 'bg-violet-50 text-violet-700 font-medium'
-                      : 'text-zinc-600 hover:bg-zinc-50 hover:text-zinc-900'
+                      ? 'bg-violet-50 dark:bg-violet-900/30 text-violet-700 dark:text-violet-400 font-medium'
+                      : 'text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-700 hover:text-zinc-900 dark:hover:text-zinc-100'
                   }
                 `}
               >
@@ -82,8 +81,8 @@ export const Layout = ({ children }) => {
 
         {/* Footer */}
         {sidebarOpen && (
-          <div className="p-4 border-t border-zinc-200">
-            <div className="text-xs text-zinc-400 text-center">
+          <div className="p-4 border-t border-zinc-200 dark:border-zinc-700">
+            <div className="text-xs text-zinc-400 dark:text-zinc-500 text-center">
               Built with AI • v2.0
             </div>
           </div>
@@ -93,7 +92,7 @@ export const Layout = ({ children }) => {
       {/* Main Content */}
       <div className="flex-1 flex flex-col overflow-hidden">
         {/* Top Navbar */}
-        <header className="bg-white border-b border-zinc-200 px-6 py-4">
+        <header className="bg-white dark:bg-zinc-800 border-b border-zinc-200 dark:border-zinc-700 px-6 py-4">
           <div className="flex items-center justify-between">
             {/* Search Bar - placeholder */}
             <div className="flex-1 max-w-xl">
@@ -102,7 +101,7 @@ export const Layout = ({ children }) => {
                 <input
                   type="text"
                   placeholder={t('search')}
-                  className="w-full pl-10 pr-4 py-2 border border-zinc-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-500 text-sm"
+                  className="w-full pl-10 pr-4 py-2 border border-zinc-200 dark:border-zinc-600 dark:bg-zinc-700 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-500 text-sm"
                 />
               </div>
             </div>
@@ -112,33 +111,33 @@ export const Layout = ({ children }) => {
               <button
                 onClick={() => setUserMenuOpen(!userMenuOpen)}
                 data-testid="user-menu-button"
-                className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-zinc-50 transition-colors"
+                className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-zinc-50 dark:hover:bg-zinc-700 transition-colors"
               >
-                <div className="w-9 h-9 rounded-full bg-violet-100 flex items-center justify-center">
-                  <User className="w-5 h-5 text-violet-600" />
+                <div className="w-9 h-9 rounded-full bg-violet-100 dark:bg-violet-900 flex items-center justify-center">
+                  <User className="w-5 h-5 text-violet-600 dark:text-violet-400" />
                 </div>
                 <div className="text-left hidden md:block">
-                  <p className="text-sm font-medium text-zinc-900">{user?.full_name || user?.username}</p>
-                  <p className="text-xs text-zinc-500">{user?.email}</p>
+                  <p className="text-sm font-medium text-zinc-900 dark:text-white">{user?.full_name || user?.username}</p>
+                  <p className="text-xs text-zinc-500 dark:text-zinc-400">{user?.email}</p>
                 </div>
-                <ChevronDown className="w-4 h-4 text-zinc-400" />
+                <ChevronDown className="w-4 h-4 text-zinc-400 dark:text-zinc-500" />
               </button>
 
               {userMenuOpen && (
-                <div className="absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-lg border border-zinc-200 py-2 z-50">
+                <div className="absolute right-0 mt-2 w-56 bg-white dark:bg-zinc-800 rounded-lg shadow-lg border border-zinc-200 dark:border-zinc-700 py-2 z-50">
                   <Link
                     to="/settings"
                     onClick={() => setUserMenuOpen(false)}
-                    className="flex items-center gap-3 px-4 py-2 text-sm text-zinc-700 hover:bg-zinc-50"
+                    className="flex items-center gap-3 px-4 py-2 text-sm text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-700"
                   >
                     <SettingsIcon className="w-4 h-4" />
                     {t('settings')}
                   </Link>
-                  <div className="border-t border-zinc-200 my-2"></div>
+                  <div className="border-t border-zinc-200 dark:border-zinc-700 my-2"></div>
                   <button
                     onClick={handleLogout}
                     data-testid="logout-button"
-                    className="w-full flex items-center gap-3 px-4 py-2 text-sm text-red-600 hover:bg-red-50"
+                    className="w-full flex items-center gap-3 px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20"
                   >
                     <LogOut className="w-4 h-4" />
                     {t('logout')}
@@ -150,7 +149,7 @@ export const Layout = ({ children }) => {
         </header>
 
         {/* Page Content */}
-        <main className="flex-1 overflow-y-auto p-6 md:p-8">
+        <main className="flex-1 overflow-y-auto p-6 md:p-8 bg-zinc-50 dark:bg-zinc-900">
           {children}
         </main>
       </div>

@@ -13,6 +13,7 @@ import { DataDetectiveModule } from './components/modules/DataDetectiveModule';
 import { DecisionIntelligenceModule } from './components/modules/DecisionIntelligenceModule';
 import authService from './services/authService';
 import './i18n/i18n'; // Import i18n configuration
+import { ThemeProvider } from './contexts/ThemeContext';
 
 // Protected Route Component
 const ProtectedRoute = ({ children }) => {
@@ -73,12 +74,13 @@ function App() {
   }, []);
 
   return (
-    <div className="App">
-      <BrowserRouter>
-        <Routes>
-          {/* Public Routes */}
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
+    <ThemeProvider>
+      <div className="App">
+        <BrowserRouter>
+          <Routes>
+            {/* Public Routes */}
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
           
           {/* Protected Routes */}
           <Route path="/" element={<ProtectedRoute><Home /></ProtectedRoute>} />
@@ -91,6 +93,7 @@ function App() {
       </BrowserRouter>
       <Toaster position="top-right" richColors />
     </div>
+    </ThemeProvider>
   );
 }
 

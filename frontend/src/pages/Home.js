@@ -57,10 +57,10 @@ export const Home = () => {
     <div className="space-y-8">
       {/* Welcome Header */}
       <div>
-        <h1 className="text-3xl md:text-4xl font-heading font-bold text-zinc-900">
+        <h1 className="text-3xl md:text-4xl font-heading font-bold text-zinc-900 dark:text-white">
           Welcome back, {user?.full_name || user?.username}! 👋
         </h1>
-        <p className="text-zinc-600 mt-2 text-lg">
+        <p className="text-zinc-600 dark:text-zinc-400 mt-2 text-lg">
           Your AI-powered data intelligence platform is ready to go
         </p>
       </div>
@@ -72,7 +72,7 @@ export const Home = () => {
           return (
             <div
               key={idx}
-              className="bg-white rounded-xl border border-zinc-200 p-6 hover:shadow-lg transition-shadow"
+              className="bg-white dark:bg-zinc-800 rounded-xl border border-zinc-200 dark:border-zinc-700 p-6 hover:shadow-lg transition-shadow"
             >
               <div className="flex items-center justify-between mb-3">
                 <div className={`w-12 h-12 rounded-lg bg-${stat.color}-100 flex items-center justify-center`}>
