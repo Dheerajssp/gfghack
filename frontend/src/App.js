@@ -6,6 +6,7 @@ import { Login } from './pages/Login';
 import { Register } from './pages/Register';
 import { Home } from './pages/Home';
 import { Settings } from './pages/Settings';
+import { Profile } from './pages/Profile';
 import { Layout } from './components/Layout';
 import { DataCopilotModule } from './components/modules/DataCopilotModule';
 import { DatasetExplorerModule } from './components/modules/DatasetExplorerModule';
@@ -84,6 +85,7 @@ function App() {
           
           {/* Protected Routes */}
           <Route path="/" element={<ProtectedRoute><Home /></ProtectedRoute>} />
+          <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
           <Route path="/copilot" element={<ProtectedRoute><DataCopilotPage /></ProtectedRoute>} />
           <Route path="/explorer" element={<ProtectedRoute><DatasetExplorerPage /></ProtectedRoute>} />
           <Route path="/detective" element={<ProtectedRoute><DataDetectivePage /></ProtectedRoute>} />

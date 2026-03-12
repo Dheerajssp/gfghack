@@ -21,7 +21,7 @@ app = FastAPI(
 )
 
 # Import routes
-from app.routes import auth_routes, copilot_routes, dataset_routes, detective_routes, decision_routes
+from app.routes import auth_routes, copilot_routes, dataset_routes, detective_routes, decision_routes, profile_routes
 
 # Include routers
 app.include_router(auth_routes.router, prefix="/api")
@@ -29,6 +29,7 @@ app.include_router(copilot_routes.router, prefix="/api")
 app.include_router(dataset_routes.router, prefix="/api")
 app.include_router(detective_routes.router, prefix="/api")
 app.include_router(decision_routes.router, prefix="/api")
+app.include_router(profile_routes.router, prefix="/api")
 
 # CORS middleware
 app.add_middleware(

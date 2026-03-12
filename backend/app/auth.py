@@ -39,13 +39,18 @@ async def get_user_by_email(email: str):
 async def get_user_by_id(user_id: str):
     return await db.users.find_one({'id': user_id}, {'_id': 0})
 
-async def create_user(email: str, username: str, password: str, full_name: str = None):
+async def create_user(email: str, username: str, password: str, full_name: str = None, country: str = None, organization: str = None, role: str = None, bio: str = None):
     user_dict = {
         'id': str(uuid.uuid4()),
         'email': email,
         'username': username,
         'hashed_password': get_password_hash(password),
         'full_name': full_name or username,
+        'country': country,
+        'organization': organization,
+        'role': role or 'Developer',
+        'bio': bio,
+        'profile_image_url': None,
         'is_active': True,
         'is_admin': False,
         'oauth_provider': None,

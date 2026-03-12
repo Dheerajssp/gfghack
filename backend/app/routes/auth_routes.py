@@ -18,7 +18,12 @@ class UserRegister(BaseModel):
     email: EmailStr
     username: str
     password: str
+    confirm_password: str
     full_name: str = None
+    country: str = None
+    organization: str = None
+    role: str = None
+    bio: str = None
 
 class UserLogin(BaseModel):
     email: EmailStr
@@ -37,6 +42,13 @@ class OAuthLogin(BaseModel):
 
 @router.post('/register', response_model=Token, status_code=status.HTTP_201_CREATED)
 async def register(user_data: UserRegister):
+    # Validate passwords match
+    if user_data.password != user_data.confirm_password:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail='Passwords do not match'
+        )
+    
     # Check if user exists
     existing_user = await get_user_by_email(user_data.email)
     if existing_user:
@@ -50,7 +62,11 @@ async def register(user_data: UserRegister):
         email=user_data.email,
         username=user_data.username,
         password=user_data.password,
-        full_name=user_data.full_name
+        full_name=user_data.full_name,
+        country=user_data.country,
+        organization=user_data.organization,
+        role=user_data.role,
+        bio=user_data.bio
     )
     
     # Create access token

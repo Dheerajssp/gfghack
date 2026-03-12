@@ -8,12 +8,17 @@ class AuthService {
     this.USER_KEY = 'user_data';
   }
 
-  async register(email, username, password, fullName) {
+  async register(email, username, password, fullName, confirmPassword, country, organization, role, bio) {
     const response = await axios.post(`${API_URL}/auth/register`, {
       email,
       username,
       password,
-      full_name: fullName
+      confirm_password: confirmPassword,
+      full_name: fullName,
+      country,
+      organization,
+      role,
+      bio
     });
     
     if (response.data.access_token) {
