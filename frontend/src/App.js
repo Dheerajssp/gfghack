@@ -1,25 +1,39 @@
 import React from 'react';
 import "@/App.css";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { Toaster } from 'sonner';
-import { Layout } from './components/Layout';
-import { DataCopilot } from './pages/DataCopilot';
-import { DatasetExplorer } from './pages/DatasetExplorer';
-import { DataDetective } from './pages/DataDetective';
-import { DecisionIntelligence } from './pages/DecisionIntelligence';
+import { Login } from './pages/Login';
+import { Register } from './pages/Register';
+import { Dashboard } from './pages/Dashboard';
+import authService from './services/authService';
+
+// Protected Route Component
+const ProtectedRoute = ({ children }) => {
+  const isAuthenticated = authService.isAuthenticated();
+  
+  if (!isAuthenticated) {
+    return <Navigate to="/login" replace />;
+  }
+  
+  return children;
+};
 
 function App() {
   return (
     <div className="App">
       <BrowserRouter>
-        <Layout>
-          <Routes>
-            <Route path="/" element={<DataCopilot />} />
-            <Route path="/explorer" element={<DatasetExplorer />} />
-            <Route path="/detective" element={<DataDetective />} />
-            <Route path="/decision" element={<DecisionIntelligence />} />
-          </Routes>
-        </Layout>
+        <Routes>
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route 
+            path="/" 
+            element={
+              <ProtectedRoute>
+                <Dashboard />
+              </ProtectedRoute>
+            } 
+          />
+        </Routes>
       </BrowserRouter>
       <Toaster position="top-right" richColors />
     </div>
