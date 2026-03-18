@@ -114,8 +114,11 @@ async def upload_profile_photo(
     with open(file_path, 'wb') as f:
         f.write(contents)
     
+    # Get backend URL from environment
+    backend_url = os.getenv('REACT_APP_BACKEND_URL', 'http://localhost:8001')
+    
     # Update user profile with photo URL
-    photo_url = f'/uploads/profiles/{filename}'
+    photo_url = f'{backend_url}/uploads/profiles/{filename}'
     await db.users.update_one(
         {'id': current_user['id']},
         {'$set': {

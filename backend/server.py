@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 from dotenv import load_dotenv
 from pathlib import Path
 import os
@@ -30,6 +31,11 @@ app.include_router(dataset_routes.router, prefix="/api")
 app.include_router(detective_routes.router, prefix="/api")
 app.include_router(decision_routes.router, prefix="/api")
 app.include_router(profile_routes.router, prefix="/api")
+
+# Mount static files for uploads
+uploads_dir = ROOT_DIR / 'uploads'
+uploads_dir.mkdir(exist_ok=True)
+app.mount("/uploads", StaticFiles(directory=str(uploads_dir)), name="uploads")
 
 # CORS middleware
 app.add_middleware(

@@ -10,6 +10,7 @@ export const Profile = () => {
   const [loading, setLoading] = useState(true);
   const [isEditing, setIsEditing] = useState(false);
   const [editData, setEditData] = useState({});
+  const [uploadingPhoto, setUploadingPhoto] = useState(false);
 
   useEffect(() => {
     loadProfile();
@@ -31,6 +32,42 @@ export const Profile = () => {
       toast.error('Failed to load profile');
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handlePhotoUpload = async (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    // Validate file type
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/webp'];
+    if (!allowedTypes.includes(file.type)) {
+      toast.error('Please upload a JPEG, PNG, or WebP image');
+      return;
+    }
+
+    // Validate file size (max 5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      toast.error('Image size should be less than 5MB');
+      return;
+    }
+
+    setUploadingPhoto(true);
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+
+      const response = await api.post('/profile/photo', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+      });
+
+      toast.success('Profile photo updated successfully!');
+      loadProfile(); // Reload profile to show new photo
+    } catch (error) {
+      console.error('Error uploading photo:', error);
+      toast.error(error.response?.data?.detail || 'Failed to upload photo');
+    } finally {
+      setUploadingPhoto(false);
     }
   };
 
@@ -75,16 +112,28 @@ export const Profile = () => {
           <div className="flex flex-col md:flex-row md:items-end md:justify-between -mt-16 mb-6">
             {/* Avatar */}
             <div className="relative">
-              <div className="w-32 h-32 rounded-full border-4 border-white dark:border-zinc-800 bg-violet-100 dark:bg-violet-900 flex items-center justify-center text-4xl font-bold text-violet-600 dark:text-violet-400 shadow-lg">
+              <div className="w-32 h-32 rounded-full border-4 border-white dark:border-zinc-800 bg-violet-100 dark:bg-violet-900 flex items-center justify-center text-4xl font-bold text-violet-600 dark:text-violet-400 shadow-lg overflow-hidden">
                 {profile?.profile_image_url ? (
-                  <img src={profile.profile_image_url} alt="Profile" className="w-full h-full rounded-full object-cover" />
+                  <img src={profile.profile_image_url} alt="Profile" className="w-full h-full object-cover" />
                 ) : (
                   profile?.full_name?.charAt(0) || profile?.username?.charAt(0) || 'U'
                 )}
               </div>
-              <button className="absolute bottom-0 right-0 p-2 bg-violet-600 hover:bg-violet-700 text-white rounded-full shadow-lg transition-colors">
-                <Camera className="w-4 h-4" />
-              </button>
+              <label htmlFor="photo-upload" className="absolute bottom-0 right-0 p-2 bg-violet-600 hover:bg-violet-700 text-white rounded-full shadow-lg transition-colors cursor-pointer">
+                {uploadingPhoto ? (
+                  <div className="animate-spin w-4 h-4 border-2 border-white border-t-transparent rounded-full"></div>
+                ) : (
+                  <Camera className="w-4 h-4" />
+                )}
+              </label>
+              <input
+                id="photo-upload"
+                type="file"
+                accept="image/jpeg,image/png,image/jpg,image/webp"
+                onChange={handlePhotoUpload}
+                className="hidden"
+                disabled={uploadingPhoto}
+              />
             </div>
 
             {/* Edit Button */}
